@@ -67,7 +67,7 @@ userRouter.post("/signin", async (c) => {
   })
 
   if (!user) {
-    return c.text("User does not exists")
+    return c.text("Wrong Inputs Entered")
   }
 
   const token = await sign({ id: user.id }, mykey);

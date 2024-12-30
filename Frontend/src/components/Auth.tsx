@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Link, useNavigate } from "react-router-dom"
 import Label from "./label"
-import { signupInput } from "@vidhigaba07/medium-common"
+import { signininput, signupInput } from "@vidhigaba07/medium-common"
 import CustomizedButton from "./button"
 import axios from "axios"
 import { BACKEND_URL } from "../../config"
@@ -16,6 +16,10 @@ export default function Auth({ type }: { type: "Sign up" | "Sign in" }) {
         password: "",
         name: ""
     })
+    const [signinInputs, setSigninInputs] = useState<signininput>({
+        username: "",
+        password: ""
+    })
     const [passwordType, setPasswordType] = useState("password")
     const [authorizing, setAuthorizing] = useState(true);
     const [touched, setTouched] = useState({
@@ -26,18 +30,32 @@ export default function Auth({ type }: { type: "Sign up" | "Sign in" }) {
     const [correctEmail, setCorrectEmail] = useState(false)
 
     async function sendInputs() {
-        if (!input.username || !input.password || !input.name) {
-            setTouched({
-                password: true,
-                username: true,
-                email: true
-            })
-            return;
+
+        if (type === "Sign up") {
+            if (!input.username || !input.password || !input.name) {
+                setTouched({
+                    password: true,
+                    username: true,
+                    email: true
+                })
+                return;
+            }
+        }
+
+        if (type === "Sign in") {
+            if (!signinInputs.username || !signinInputs.password) {
+                setTouched({
+                    email: true,
+                    password: true,
+                    username: false
+                })
+                return;
+            }
         }
 
         try {
             setAuthorizing(false);
-            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "Sign up" ? "signup" : "signin"}`, input)
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/${type === "Sign up" ? "signup" : "signin"}`, type === "Sign up" ? input : signinInputs)
             const jwt = await response.data;
             if (jwt === "Wrong Inputs Entered") {
                 setAuthorizing(true)
@@ -62,7 +80,6 @@ export default function Auth({ type }: { type: "Sign up" | "Sign in" }) {
                             <Link className="pl-2 underline" to={type === "Sign up" ? "/Signin" : "/Signup"}>{type === "Sign up" ? "Sign in" : "Sign up"}</Link>
                         </div>
                     </div>
-
                     <div className="mt-6">
                         <div>
                             {type === "Sign up" ? <Label label="Username" placeholder="Enter your username" onChange={(e) => {
@@ -78,27 +95,41 @@ export default function Auth({ type }: { type: "Sign up" | "Sign in" }) {
                             }} isError={touched.username && input.name === ""}></Label> : null}
                         </div>
                         <div className="mt-3">
-                            <Label label="Email" placeholder="m@example.com" onChange={(e) => {
-                                setInput({
-                                    ...input,
-                                    username: e.target.value
-                                })
-                            }} onblur={() => {
-                                setTouched({
-                                    ...touched,
-                                    email: true
-                                })
-                            }} isError={touched.email && input.username === ""}></Label>
-                            {correctEmail ? <p className="mt-1 text-xs text-red-500">Please enter a valid email.</p> : ""}
+                            {type === "Sign in" ? correctEmail ? <p className="mt-1 text-xs text-red-500">Email and password doesnot match.</p> : "" : null}
+                            <Label label="Email" placeholder="m@example.com"
+                                onChange={(e) => {
+                                    {
+                                        type === "Sign up" ? setInput({
+                                            ...input,
+                                            username: e.target.value
+                                        }) : setSigninInputs({
+                                            ...signinInputs,
+                                            username: e.target.value
+                                        })
+                                    }
+                                    setCorrectEmail(false);
+                                }}
+                                onblur={() => {
+                                    setTouched({
+                                        ...touched,
+                                        email: true
+                                    })
+                                }} isError={type === "Sign up" ? touched.email && input.username === "" : touched.email && signinInputs.username === ""}></Label>
+                            {type === "Sign up" ? correctEmail ? <p className="mt-1 text-xs text-red-500">Please enter a valid email.</p> : "" : null}
                         </div>
                         <div className="mt-3">
                             <div>
                                 <label className="block mb-2 text-sm font-medium text-gray-900 text-black font-semibold">Password</label>
                                 <input type={passwordType} onChange={(e) => {
-                                    setInput({
-                                        ...input,
-                                        password: e.target.value
-                                    })
+                                    {
+                                        type === "Sign up" ? setInput({
+                                            ...input,
+                                            password: e.target.value
+                                        }) : setSigninInputs({
+                                            ...signinInputs,
+                                            password: e.target.value
+                                        })
+                                    }
                                 }} onBlur={() => {
                                     setTouched({
                                         ...touched,
@@ -106,7 +137,9 @@ export default function Auth({ type }: { type: "Sign up" | "Sign in" }) {
                                     })
                                 }} className={`bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 ${touched.password && input.password === "" ? "border-red-500" : "border-gray-300"
                                     }`} placeholder="Enter your password" required />
-                                {touched.password && input.password === "" && (
+                                {type === "Sign up" ? touched.password && input.password === "" && (
+                                    <p className="mt-1 text-xs text-red-500">This field is required.</p>
+                                ) : touched.password && signinInputs.password === "" && (
                                     <p className="mt-1 text-xs text-red-500">This field is required.</p>
                                 )}
                                 <div className="flex mt-4">

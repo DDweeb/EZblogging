@@ -23,10 +23,10 @@ export default function GetBlogs() {
             </div>
         </div>
     }
-    return <div>
+    return <div className="flex flex-col">
         <div> <Appbar name="Vidhi Gaba"></Appbar> </div>
-        <div className="flex justify-center">
-            <div className="">
+        <div className="">
+            <div className="flex justify-center">
                 <div className="mt-2">
                     {blogs.map((blog: { id: string; content: string; title: string; date: string; author: { name: string; }; }) => {
                         return <BlogCard key={key++} id={blog.id} content={blog.content} title={blog.title} name={blog.author.name} date={blog.date}></BlogCard>

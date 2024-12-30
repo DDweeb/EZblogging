@@ -23,7 +23,7 @@ export function useBlogs() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get("http://127.0.0.1:8787/api/v1/blog/bulk", {
+        axios.get("https://backend.vidhigaba46.workers.dev/api/v1/blog/bulk", {
             headers: {
                 Authorization: localStorage.getItem("token")
             }
@@ -41,6 +41,7 @@ export function useBlogs() {
 
 }
 
+
 export function useBlog({ id }: { id: string }) {
 
     const [blog, setBlog] = useState<Blog>({
@@ -56,7 +57,7 @@ export function useBlog({ id }: { id: string }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8787/api/v1/blog/${id}`, {
+        axios.get(`https://backend.vidhigaba46.workers.dev/api/v1/blog/${id}`, {
             headers: {
                 Authorization: localStorage.getItem("token")
             }
@@ -79,7 +80,7 @@ export function useFilter({ filterInput }: { filterInput: string }) {
     const [title, setTitle] = useState<Title[]>([])
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:8787/api/v1/blog/filter?filter=${filterInput}`, {
+        axios.get(`https://backend.vidhigaba46.workers.dev/api/v1/blog/filter?filter=${filterInput}`, {
             headers: {
                 Authorization: localStorage.getItem("token")
             }

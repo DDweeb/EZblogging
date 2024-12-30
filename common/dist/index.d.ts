@@ -37,12 +37,12 @@ export declare const initializePost: z.ZodObject<{
 export type initializePost = z.infer<typeof initializePost>;
 export declare const updateBlog: z.ZodObject<{
     title: z.ZodOptional<z.ZodString>;
-    contemt: z.ZodOptional<z.ZodString>;
+    content: z.ZodOptional<z.ZodString>;
 }, "strip", z.ZodTypeAny, {
     title?: string | undefined;
-    contemt?: string | undefined;
+    content?: string | undefined;
 }, {
     title?: string | undefined;
-    contemt?: string | undefined;
+    content?: string | undefined;
 }>;
 export type updateBlog = z.infer<typeof updateBlog>;

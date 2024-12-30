@@ -7,7 +7,7 @@ interface inputTypes {
     onChange: (e: ChangeEvent<HTMLInputElement>) => void,
     type?: string,
     onblur: (e: ChangeEvent<HTMLInputElement>) => void,
-    isError: boolean
+    isError: boolean | string
 
 }
 

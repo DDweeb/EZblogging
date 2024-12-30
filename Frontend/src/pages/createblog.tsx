@@ -30,7 +30,7 @@ export default function CreateBlog() {
                     setTagline(e.target.value)
                 }} type="text" className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " placeholder="Tagline" />
                 <button onClick={async () => {
-                    const response = await axios.post("http://127.0.0.1:8787/api/v1/blog/new", {
+                    const response = await axios.post("https://backend.vidhigaba46.workers.dev/api/v1/blog/new", {
                         title,
                         content,
                         tagline

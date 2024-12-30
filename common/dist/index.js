@@ -7,12 +7,12 @@ exports.updateBlog = exports.initializePost = exports.signinInput = exports.sign
 const zod_1 = __importDefault(require("zod"));
 exports.signupInput = zod_1.default.object({
     username: zod_1.default.string().email(),
-    password: zod_1.default.string().min(6),
+    password: zod_1.default.string().min(1),
     name: zod_1.default.string().optional()
 });
 exports.signinInput = zod_1.default.object({
     username: zod_1.default.string().email(),
-    password: zod_1.default.string().min(6),
+    password: zod_1.default.string().min(1)
 });
 exports.initializePost = zod_1.default.object({
     title: zod_1.default.string(),
@@ -20,5 +20,5 @@ exports.initializePost = zod_1.default.object({
 });
 exports.updateBlog = zod_1.default.object({
     title: zod_1.default.string().optional(),
-    contemt: zod_1.default.string().optional()
+    content: zod_1.default.string().optional()
 });
